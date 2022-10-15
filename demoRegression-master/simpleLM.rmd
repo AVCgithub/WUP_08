@@ -42,9 +42,9 @@ reticulate::use_virtualenv('testEnv')
 
 ```{python}
 import pandas as pd
-#from plotnine import * 
+
 import plotnine as p9
-#from pandas import *
+import dpython as dplyr
 import pandas as pd
   
 # reading dataset
