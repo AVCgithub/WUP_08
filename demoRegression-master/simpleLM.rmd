@@ -5,7 +5,7 @@ date: "Fall 2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setupR, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -34,7 +34,7 @@ reticulate::virtualenv_install('testEnv', packages = 'dpython')
 
 
 ## Setup Block
-```{r setup, include=TRUE}
+```{r setupP, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 library(reticulate)
 reticulate::use_virtualenv('testEnv')
@@ -42,13 +42,16 @@ reticulate::use_virtualenv('testEnv')
 
 ```{python}
 import pandas as pd
-from plotnine import * #ggplot, aes, geom_histogram, geom_boxplot
+#from plotnine import * 
+import plotnine as p9
+#from pandas import *
+import pandas as pd
   
 # reading dataset
 df = pd.read_csv("BEARS.csv")
 print(df)
   
-ggplot(df) + aes(x="HEADLEN") + geom_histogram()
-ggplot(df) + aes(x="HEADLEN", y="LENGTH") + geom_point() +geom_smooth(method = 'lm')
+p9.ggplot(df) + p9.aes(x="HEADLEN") + p9.geom_histogram()
+p9.ggplot(df) + p9.aes(x="HEADLEN", y="LENGTH") + p9.geom_point() + p9.geom_smooth(method = 'lm')
 
 ```
