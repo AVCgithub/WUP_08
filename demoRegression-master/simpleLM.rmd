@@ -11,26 +11,44 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## make a simple regression model
 
+
 ```{r}
 bears <- read.csv(file="BEARS.csv",header = TRUE)
 ```
 
-## Model LENGTH ~ NECK  this is an example  
+## set up python stuff
 
-```{r}
-simp <- lm(LENGTH~NECK,data=bears)
-plot(LENGTH~NECK,data=bears)
-abline(simp)
-summary.lm(simp)
+```{r initial-setup, eval=T, echo=FALSE, include=FALSE}
+#install.packages('reticulate')
+reticulate::virtualenv_create('testEnv')
+reticulate::use_virtualenv('testEnv')
+reticulate::virtualenv_install('testEnv', packages = 'numpy')
+reticulate::virtualenv_install('testEnv', packages = 'matplotlib')
+reticulate::virtualenv_install('testEnv', packages = 'pandas')
+reticulate::virtualenv_install('testEnv', packages = 'scipy')
+
+reticulate::virtualenv_install('testEnv', packages = 'plotnine')
+reticulate::virtualenv_install('testEnv', packages = 'dpython')
+#reticulate::virtualenv_install('testEnv', packages = 'sklearn')
 ```
 
-## now predict the length of a bear who has a neck of 17, 22 and 26
 
-
-```{r}
-new <- data.frame(NECK=c(17,22,26))
-predict(simp,new)
-predict(simp,new,se.fit=TRUE)
+## Setup Block
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+reticulate::use_virtualenv('testEnv')
 ```
-## Surely there is another variable that can better predict LENGTH than NECK. Find one and compare its performance to that of neck by it value of Adjusted-Rsquared (bigger is better).
 
+```{python}
+import pandas as pd
+from plotnine import * #ggplot, aes, geom_histogram, geom_boxplot
+  
+# reading dataset
+df = pd.read_csv("BEARS.csv")
+print(df)
+  
+ggplot(df) + aes(x="HEADLEN") + geom_histogram()
+ggplot(df) + aes(x="HEADLEN", y="LENGTH") + geom_point() +geom_smooth(method = 'lm')
+
+```
